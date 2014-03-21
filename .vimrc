@@ -108,17 +108,64 @@ let NERDTreeQuitOnOpen=1
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 
-" CtrlP
-let g:ctrlp_max_files=0
-let g:ctrlp_custom_ignore={
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|o|png)$',
-  \ } 
-set wildignore +=*/tmp/*,*.so,*.swp,*.zip,*/.git/*,*.o
-"let g:ctrlp_user_command = 'find %s -type f'
-
 let g:alternateSearchPath='wdr:src'
 "let g:ackprg='ack --nocolor --nogroup --column'
+
+" Unite
+let g:unite_split_rule='botright'
+let g:unite_source_rec_max_cache_files=10000000
+let g:unite_enable_start_insert = 1
+" Use ag for search
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+set wildignore=*.o,*.obj,*~,*.pyc "stuff to ignore when tab completing
+set wildignore+=.env[0-9]+
+set wildignore+=.git
+set wildignore+=.coverage
+set wildignore+=*DS_Store*
+set wildignore+=.sass-cache/
+set wildignore+=__pycache__/
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=.tox/**
+set wildignore+=.idea/**
+set wildignore+=*.egg,*.egg-info
+set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
+set wildignore+=*/.nx/**,*.app
+try
+  " Set up some custom ignores
+  call unite#custom#source('buffer,file,file_rec/async,file_rec,file_mru,file,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ '\.hg/',
+      \ '\.tox',
+      \ '\.idea',
+      \ '\.pyc',
+      \ '\.o',
+      \ '__pycache__',
+      \ '_build',
+      \ 'dist',
+      \ '\.tar\.gz',
+      \ '\.mp3',
+      \ '\.xml',
+      \ '\.zip',
+      \ '\.java',
+      \ '\.jar',
+      \ '\.png',
+      \ '\.sass-cache/',
+      \ '*/out/',
+      \ ], '\|'))
+catch
+endtry
 
 command W w
 command WQ wq
