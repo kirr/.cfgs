@@ -70,24 +70,19 @@ vnoremap > >gv
 
 set pastetoggle=<leader>v
 
-
 "Solarized
-set t_Co=16
+set t_Co=256
+let g:solarized_termcolors=256
+colorscheme solarized
+let g:solarized_termtrans=1
 if has("gui_running")
-    set t_Co=256
-    let g:solarized_termcolors=256
     set guifont=Menlo\ Regular:h13
-    colorscheme solarized
     set transparency=4
 endif
 
 syntax enable
-"set background=dark
-"colorscheme solarized
 
 "call togglebg#map("<leader>b")
-
-hi LineNr ctermfg=grey
 
 " NERDTree
 nmap <leader>nt :NERDTreeFind<CR>
@@ -101,12 +96,15 @@ let NERDTreeKeepTreeInNewTab=1
 nnoremap <Leader>cp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy current filename to system clipboard
 nnoremap <Leader>cf :let @*=expand("%:t")<cr>:echo "Copied file name to clipboard"<cr>
-nnoremap <Leader>cb :let @*='breakpoint set --file '.expand("%").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
-nnoremap y "+y
-vnoremap y "+y
+nnoremap <Leader>br :let @*='breakpoint set --file '.expand("%").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
+"nnoremap y "+y
+"vnoremap y "+y
+set splitbelow
+set splitright
 
 " Alternate
-map <C-a> :A<return>
+nnoremap <C-a> :A<CR>
+nnoremap <C-l> :IH<CR>
 let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
@@ -123,11 +121,7 @@ if executable('ag')
   let g:unite_source_grep_recursive_opt = ''
 endif
 
-"let g:unite_source_grep_command = 'git'
-"let g:unite_source_grep_default_opts = 'grep -n --no-color'
-"let g:unite_source_grep_recursive_opt = ''
-nnoremap <leader>g :Unite grep:.<CR>
-nnoremap <leader>giw :Unite grep:.::<C-r><C-w><CR>
+nnoremap <leader>g :Unite git_grep:::<C-r><C-w>
 
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
@@ -136,7 +130,7 @@ nnoremap <leader>f :Unite find:.<CR>
 nnoremap <leader>r :UniteResume<CR>
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
 "nnoremap <leader>G :Unite grep:.:-G '(\.cc$|\.mm$)' -w<CR>
-nmap <tab> :b#<CR>
+nmap tn :b#<CR>
 
 set wildignore=*.o,*.obj,*~,*.pyc "stuff to ignore when tab completing
 set wildignore+=.env[0-9]+
@@ -193,4 +187,5 @@ so ~/Desktop/chromium/src/tools/vim/clang-format.vim
 so ~/Desktop/chromium/src/tools/vim/filetypes.vim
 
 "let g:ycm_auto_trigger = 0
+set history=10000
 
