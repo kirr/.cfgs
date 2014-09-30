@@ -103,8 +103,8 @@ set splitbelow
 set splitright
 
 " Alternate
-nnoremap <C-a> :A<CR>
-nnoremap <C-l> :IH<CR>
+nnoremap <Leader>h :A<CR>
+nnoremap <Leader>l :IH<CR>
 let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
@@ -127,6 +127,7 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 call unite#filters#sorter_default#use(['sorter_rank'])
 nnoremap <leader>b :Unite buffer<CR>
 nnoremap <leader>f :Unite find:.<CR>
+nnoremap <leader>a :Unite file_rec/async:.<CR>
 nnoremap <leader>r :UniteResume<CR>
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
 "nnoremap <leader>G :Unite grep:.:-G '(\.cc$|\.mm$)' -w<CR>
@@ -181,11 +182,34 @@ command WQ wq
 command Wq wq
 command Q q
 
-let g:ycm_global_ycm_extra_conf = '~/Desktop/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
-so ~/Desktop/chromium/src/tools/vim/ninja-build.vim
-so ~/Desktop/chromium/src/tools/vim/clang-format.vim
-so ~/Desktop/chromium/src/tools/vim/filetypes.vim
+"let $PATH .= ':/Users/kirr/yandex/browser_fork/src/buildtools/mac'
+let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser_fork/src/tools/vim/chromium.ycm_extra_conf.py'
+so ~/yandex/browser_fork/src/tools/vim/ninja-build.vim
+so ~/yandex/clang-format.vim
+so ~/yandex/browser_fork/src/tools/vim/filetypes.vim
 
 "let g:ycm_auto_trigger = 0
 set history=10000
 
+let b:delimitMate_autoclose = 0
+set completeopt-=preview
+
+function! s:insert_gates()
+  let gatename = substitute(toupper(expand("%")), "\\(\\.\\|/\\)", "_", "g") . "_"
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename
+  execute "normal! Go#endif  // " . gatename
+  normal! kk
+endfunction
+
+function! s:insert_copyright()
+  let author_name = substitute(system("git config user.name"), "\\n", "", "g")
+  let author_email = substitute(system("git config user.email"), "\\n", "", "g")
+  execute "normal! i// Copyright (c) 2014 Yandex LLC. All rights reserved."
+  execute "normal! oAuthor: " . author_name . " <" . author_email . ">"
+  normal! kk
+endfunction
+
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+nnoremap <leader>gard :call <SID>insert_gates()<CR>
+nnoremap <leader>cpr :call <SID>insert_copyright()<CR>

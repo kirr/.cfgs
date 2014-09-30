@@ -26,7 +26,7 @@
 
 " Variables  "{{{
 "call unite#util#set_default('g:unite_source_find_command', 'find')
-call unite#util#set_default('g:unite_source_git_grep_max_candidates', 100)
+call unite#util#set_default('g:unite_source_git_grep_max_candidates', 500)
 "call unite#util#set_default('g:unite_source_find_ignore_pattern',
       "\'\~$\|\.\%(bak\|sw[po]\)$\|'.
       "\'\%(^\|/\)\.\%(hg\|git\|bzr\|svn\)\%($\|/\)')
