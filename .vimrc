@@ -109,28 +109,14 @@ let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 "let g:ackprg='ack --nocolor --nogroup --column'
+nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>w :execute("e ".mycurf)<CR><C-w>p
+nnoremap <F9> :vertical wincmd F<CR>
 
-" Unite
-let g:unite_split_rule='botright'
-let g:unite_source_rec_max_cache_files=10000000
-let g:unite_enable_start_insert = 1
-" Use ag for search
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-  let g:unite_source_grep_recursive_opt = ''
-endif
+nnoremap <leader>gg :Shell git grep -n <C-r><C-w>
+nnoremap <leader>G :Shell git grep -n<space>
+nnoremap <leader>F :Shell git ls-files \| fgrep<space>
 
-nnoremap <leader>g :Unite git_grep:::<C-r><C-w>
-
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-nnoremap <leader>b :Unite buffer<CR>
-nnoremap <leader>f :Unite find:.<CR>
-nnoremap <leader>a :Unite file_rec/async:.<CR>
-nnoremap <leader>r :UniteResume<CR>
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
-"nnoremap <leader>G :Unite grep:.:-G '(\.cc$|\.mm$)' -w<CR>
 nmap tn :b#<CR>
 
 set wildignore=*.o,*.obj,*~,*.pyc "stuff to ignore when tab completing
@@ -151,31 +137,6 @@ set wildignore+=*.egg,*.egg-info
 set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
 set wildignore+=*/.nx/**,*.app
-try
-  " Set up some custom ignores
-  call unite#custom#source('buffer,file,file_rec/async,file_rec,file_mru,file,grep',
-      \ 'ignore_pattern', join([
-      \ '\.git/',
-      \ '\.hg/',
-      \ '\.tox',
-      \ '\.idea',
-      \ '\.pyc',
-      \ '\.o',
-      \ '__pycache__',
-      \ '_build',
-      \ 'dist',
-      \ '\.tar\.gz',
-      \ '\.mp3',
-      \ '\.xml',
-      \ '\.zip',
-      \ '\.java',
-      \ '\.jar',
-      \ '\.png',
-      \ '\.sass-cache/',
-      \ '*/out/'
-      \ ], '\|'))
-catch
-endtry
 
 command W w
 command WQ wq
@@ -213,3 +174,5 @@ endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
+
+let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}
