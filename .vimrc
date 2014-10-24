@@ -109,7 +109,7 @@ let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 "let g:ackprg='ack --nocolor --nogroup --column'
-nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>w :execute("e ".mycurf)<CR><C-w>p
+nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
 nnoremap <F9> :vertical wincmd F<CR>
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w>
@@ -145,9 +145,9 @@ command Q q
 
 "let $PATH .= ':/Users/kirr/yandex/browser_fork/src/buildtools/mac'
 let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser_fork/src/tools/vim/chromium.ycm_extra_conf.py'
-so ~/yandex/browser_fork/src/tools/vim/ninja-build.vim
+so ~/yandex/browser-rc/src/tools/vim/ninja-build.vim
 so ~/yandex/clang-format.vim
-so ~/yandex/browser_fork/src/tools/vim/filetypes.vim
+so ~/yandex/browser-rc/src/tools/vim/filetypes.vim
 
 "let g:ycm_auto_trigger = 0
 set history=10000
@@ -175,4 +175,4 @@ autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
 
-let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}
+"let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}
