@@ -110,11 +110,13 @@ let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 "let g:ackprg='ack --nocolor --nogroup --column'
 nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
-nnoremap <F9> :vertical wincmd F<CR>
+nnoremap <F9> :wincmd F<CR><C-w>x<C-w>k<C-w>k :close<CR>
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w>
 nnoremap <leader>G :Shell git grep -n<space>
 nnoremap <leader>F :Shell git ls-files \| fgrep<space>
+nnoremap <leader>b :!~/tools/show_pull_request.sh <cword><cr>
+nnoremap <leader>L :let cur_line=line(".") \| execute("!python ~/tools/open_line_in_browser.py '%:p' ".cur_line)<cr>
 
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
 nmap tn :b#<CR>
@@ -144,10 +146,10 @@ command Wq wq
 command Q q
 
 "let $PATH .= ':/Users/kirr/yandex/browser_fork/src/buildtools/mac'
-let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser_fork/src/tools/vim/chromium.ycm_extra_conf.py'
-so ~/yandex/browser-rc/src/tools/vim/ninja-build.vim
+let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser-master/src/tools/vim/chromium.ycm_extra_conf.py'
+so ~/yandex/browser-master/src/tools/vim/ninja-build.vim
 so ~/yandex/clang-format.vim
-so ~/yandex/browser-rc/src/tools/vim/filetypes.vim
+so ~/yandex/browser-master/src/tools/vim/filetypes.vim
 
 "let g:ycm_auto_trigger = 0
 set history=10000
