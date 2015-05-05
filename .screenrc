@@ -8,7 +8,7 @@ defbce "on"
 # set TERM
 term screen-256color-bce
 
-shell -$SHEL
+shell -$SHELL
 
 hardstatus string '%{= mK}%-Lw%{= KW}%50>%n%f* %t%{= mK}
 %+Lw%< %{= kG}%-=%D %d %M %Y %c:%s%{-}'
