@@ -113,6 +113,7 @@ nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>k :execute("e ".mycurf)<CR><
 nnoremap <F9> :wincmd F<CR><C-w>x<C-w>k<C-w>k :close<CR>
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
+nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
 nnoremap <leader>G :Shell git grep -n<space>
 nnoremap <leader>F :Shell git ls-files \| fgrep<space>
 nnoremap <leader>b :!~/tools/show_pull_request.sh <cword><cr>
@@ -168,7 +169,7 @@ endfunction
 function! s:insert_copyright()
   let author_name = substitute(system("git config user.name"), "\\n", "", "g")
   let author_email = substitute(system("git config user.email"), "\\n", "", "g")
-  execute "normal! i// Copyright (c) 2014 Yandex LLC. All rights reserved."
+  execute "normal! i// Copyright (c) 2015 Yandex LLC. All rights reserved."
   execute "normal! oAuthor: " . author_name . " <" . author_email . ">"
   normal! kk
 endfunction
