@@ -3,6 +3,7 @@ import re
 import subprocess
 import sys
 import urllib
+import webbrowser
 
 def parse_repository_url(s):
     #TODO(kirr) support different types of git url
@@ -60,5 +61,4 @@ url_params = '?at={0}'.format(urllib.quote_plus('refs/heads/' + current_branch))
 url = 'https://{0}/projects/{1}/repos/{2}/browse/{3}{4}#{5}'.format(host, project, repo, file_path, url_params, line_number)
 os.system("echo '%s' | pbcopy" % url)
 print url + " is copied to clipboard"
-os.system('open ' + url)
-
+webbrowser.open(url)

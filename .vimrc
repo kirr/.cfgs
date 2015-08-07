@@ -112,7 +112,7 @@ let g:alternateExtensions_mm = "h,H,hpp,HPP"
 nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
 nnoremap <F9> :wincmd F<CR><C-w>x<C-w>k<C-w>k :close<CR>
 
-nnoremap <leader>gg :Shell git grep -n <C-r><C-w>
+nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>G :Shell git grep -n<space>
 nnoremap <leader>F :Shell git ls-files \| fgrep<space>
 nnoremap <leader>b :!~/tools/show_pull_request.sh <cword><cr>

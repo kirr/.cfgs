@@ -6,5 +6,7 @@ if [[ $# != 0 ]]; then
   platform=`uname`
   if [[ $platform == 'Darwin' ]]; then
     open "https://stash.desktop.dev.yandex.net/projects/STARDUST/repos/browser/pull-requests/`echo $commit_header | awk '{print substr($4, 2, length($4) - 1)}'`"
+  else
+    xdg-open "https://stash.desktop.dev.yandex.net/projects/STARDUST/repos/browser/pull-requests/`echo $commit_header | awk '{print substr($4, 2, length($4) - 1)}'`"
   fi
 fi
