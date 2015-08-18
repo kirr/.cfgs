@@ -146,17 +146,17 @@ command WQ wq
 command Wq wq
 command Q q
 
-"let $PATH .= ':/Users/kirr/yandex/browser_fork/src/buildtools/mac'
-let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser-master/src/tools/vim/chromium.ycm_extra_conf.py'
-so ~/yandex/browser-master/src/tools/vim/ninja-build.vim
-so ~/yandex/clang-format.vim
-so ~/yandex/browser-master/src/tools/vim/filetypes.vim
+let g:ycm_global_ycm_extra_conf = '/home/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
+so ~/yandex/browser/src/tools/vim/ninja-build.vim
+so ~/yandex/browser/src/tools/vim/clang-format.vim
+so ~/yandex/browser/src/tools/vim/filetypes.vim
 
 "let g:ycm_auto_trigger = 0
 set history=10000
 
 let b:delimitMate_autoclose = 0
 set completeopt-=preview
+set shell=/bin/bash
 
 function! s:insert_gates()
   let gatename = substitute(toupper(expand("%")), "\\(\\.\\|/\\)", "_", "g") . "_"
