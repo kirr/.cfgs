@@ -125,7 +125,7 @@ function git_status_state --description 'return git status string'
 
   set -l rbc (git_prompt_operation_branch_bare $repo_info)
   set -l r $rbc[1] # current operation
-  set -l b (command basename $rbc[2]) # current branch
+  set -l b (echo $rbc[2] | sed 's|refs/heads/||') # current branch
   echo "$b$r"
 end
 
@@ -137,6 +137,6 @@ function update_tmux_state --on-variable _ --description 'Set tmux window name'
   set -l window_name (tmux_window_name)
   set -l b_op (git_status_state)
 
-  tmux rename-window -t$TMUX_PANE "$window_name"
-  tmux set-window-option status-left "$b_op"
+  tmux rename-window -t$TMUX_PANE "$window_name" ^/dev/null
+  tmux set-option -w -q status-left "$b_op" ^/dev/null
 end
