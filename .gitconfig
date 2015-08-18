@@ -1,0 +1,19 @@
+[color]
+    ui = true
+[alias]
+    co = checkout
+    st = status
+    br = branch
+    di = diff
+    dc = diff --cached
+[core]
+    editor = vim
+[user]
+    name = Kirill Kosarev
+    email = kirr@yandex-team.ru
+[diff]
+    tool = vimdiff
+[merge]
+    tool = vimdiff
+[difftool]
+    prompt = false
