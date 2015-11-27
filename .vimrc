@@ -73,8 +73,8 @@ set pastetoggle=<leader>v
 "Solarized
 set t_Co=256
 let g:solarized_termcolors=256
+let g:solarized_termtrans = 1
 colorscheme solarized
-let g:solarized_termtrans=1
 if has("gui_running")
     set guifont=Menlo\ Regular:h13
     set transparency=4
@@ -96,7 +96,7 @@ let NERDTreeKeepTreeInNewTab=1
 nnoremap <Leader>cp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy current filename to system clipboard
 nnoremap <Leader>cf :let @*=expand("%:t")<cr>:echo "Copied file name to clipboard"<cr>
-nnoremap <Leader>br :let @*='breakpoint set --file '.expand("%").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
+nnoremap <Leader>br :let @*='breakpoint set --file '.expand("%:t").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
 "nnoremap y "+y
 "vnoremap y "+y
 set splitbelow
@@ -109,8 +109,7 @@ let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 "let g:ackprg='ack --nocolor --nogroup --column'
-nnoremap <F8> :let mycurf=expand("<cfile>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
-nnoremap <F9> :wincmd F<CR><C-w>x<C-w>k<C-w>k :close<CR>
+nnoremap <F8> :let mycurf=expand("<cWORD>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
