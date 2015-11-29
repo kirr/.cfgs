@@ -108,8 +108,6 @@ nnoremap <Leader>l :IH<CR>
 let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
-"let g:ackprg='ack --nocolor --nogroup --column'
-nnoremap <F8> :let mycurf=expand("<cWORD>")<CR><C-w>k :execute("e ".mycurf)<CR><C-w>p
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
@@ -150,6 +148,14 @@ so ~/yandex/browser/src/tools/vim/ninja-build.vim
 so ~/yandex/browser/src/tools/vim/clang-format.vim
 so ~/yandex/browser/src/tools/vim/filetypes.vim
 
+set cursorline
+hi clear CursorLine
+hi CursorLineNR cterm=bold ctermbg=cyan
+augroup clcolor
+  autocmd! ColorScheme * hi clear CursorLine
+  autocmd! ColorScheme * hi CursorLineNR cterm=bold ctermbg=cyan
+augroup end
+
 "let g:ycm_auto_trigger = 0
 set history=10000
 
@@ -173,8 +179,27 @@ function! s:insert_copyright()
   normal! kk
 endfunction
 
+function! s:openFileInWindowAbove()
+ let mycurf = expand("<cWORD>")
+ let window_count = winnr('$')
+ let window_id = winnr()
+
+ if window_count == 1
+  sp
+  let window_id = winnr()
+ endif
+ wincmd k
+ if window_id == winnr()
+  sp
+  wincmd p
+ endif
+ execute "edit" mycurf
+ wincmd p
+endfunction
+
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
+nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
 
 "let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}
