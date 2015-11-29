@@ -113,7 +113,9 @@ nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
 nnoremap <leader>G :Shell git grep -n<space>
 nnoremap <leader>F :Shell git ls-files \| fgrep<space>
-nnoremap <leader>b :!~/tools/show_pull_request.sh <cword><cr>
+nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
+vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("Shell! git blame -L ".line_start.",".line_end." %")<cr>
+nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("Shell! git blame -L ".line_start.",".line_start." %")<cr>
 nnoremap <leader>L :let cur_line=line(".") \| execute("!python ~/tools/open_line_in_browser.py '%:p' ".cur_line)<cr>
 
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
