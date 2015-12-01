@@ -183,9 +183,16 @@ endfunction
 
 function! s:openFileInWindowAbove()
  let mycurf = expand("<cWORD>")
+ let last_colon = stridx(mycurf, ":")
+ if last_colon != -1
+   let last_colon = stridx(mycurf, ":", last_colon + 1)
+   if last_colon != -1
+     let mycurf = strpart(mycurf, 0, last_colon)
+   endif
+ endif
+
  let window_count = winnr('$')
  let window_id = winnr()
-
  if window_count == 1
   sp
   let window_id = winnr()
