@@ -111,7 +111,8 @@ let g:alternateExtensions_mm = "h,H,hpp,HPP"
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
-nnoremap <leader>G :Shell git grep -n<space>
+nnoremap <leader>G :Shell git gs<space>
+nnoremap <leader>GG :Shell git gs <C-r><C-w>
 nnoremap <leader>F :Shell git ls-files \| fgrep<space>
 nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
 vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("Shell! git blame -L ".line_start.",".line_end." %")<cr>
@@ -145,10 +146,19 @@ command WQ wq
 command Wq wq
 command Q q
 
-let g:ycm_global_ycm_extra_conf = '/home/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
-so ~/yandex/browser/src/tools/vim/ninja-build.vim
-so ~/yandex/browser/src/tools/vim/clang-format.vim
-so ~/yandex/browser/src/tools/vim/filetypes.vim
+if stridx(getcwd(), 'yandex') == -1
+  let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser-master/src/tools/vim/chromium.ycm_extra_conf.py'
+  let g:clang_format_path = '/Users/kirr/yandex/browser-master/src/buildtools/mac/clang-format'
+  so ~/yandex/browser-master/src/tools/vim/ninja-build.vim
+  so ~/yandex/clang-format.vim
+  so ~/yandex/browser-master/src/tools/vim/filetypes.vim
+else
+  let g:ycm_global_ycm_extra_conf = '/Users/kirr/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
+  let g:clang_format_path = '/Users/kirr/chromium/src/buildtools/mac/clang-format'
+  so ~/chromium/src/tools/vim/ninja-build.vim
+  so ~/yandex/clang-format.vim
+  so ~/chromium/src/tools/vim/filetypes.vim
+endif
 
 set cursorline
 hi clear CursorLine
