@@ -11,6 +11,8 @@ export PATH=~/yandex/depot_tools:$PATH
 export GYP_GENERATORS=ninja
 export EDITOR=vim
 
+bindkey -v
+
 # make bash autocomplete with up arrow/down arrow
 export HISTFILE=~/.zsh_history
 export HISTSIZE=100000
@@ -18,8 +20,6 @@ setopt -o sharehistory
 setopt -o inc_append_history
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
-
-bindkey -v
 
 alias gg='git grep -n'
 alias gl='git log -1'
