@@ -68,6 +68,15 @@ set softtabstop=2
 vnoremap < <gv
 vnoremap > >gv
 
+vnoremap <Up> <NOP>
+vnoremap <Down> <NOP>
+vnoremap <Left> <NOP>
+vnoremap <Right> <NOP>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
 set pastetoggle=<leader>v
 
 "Solarized
@@ -110,6 +119,7 @@ let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 
 nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
+nnoremap <leader>gp :Shell git grep -n <C-r><C-w> -- "*.py"
 nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
 nnoremap <leader>G :Shell git gs<space>
 nnoremap <leader>GG :Shell git gs <C-r><C-w>
@@ -146,18 +156,22 @@ command WQ wq
 command Wq wq
 command Q q
 
+if stridx(getcwd(), 'Volumes') != -1
+  let g:loaded_youcompleteme = 1
+endif
+
 if stridx(getcwd(), 'yandex') == -1
-  let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser-master/src/tools/vim/chromium.ycm_extra_conf.py'
-  let g:clang_format_path = '/Users/kirr/yandex/browser-master/src/buildtools/mac/clang-format'
-  so ~/yandex/browser-master/src/tools/vim/ninja-build.vim
-  so ~/yandex/clang-format.vim
-  so ~/yandex/browser-master/src/tools/vim/filetypes.vim
-else
   let g:ycm_global_ycm_extra_conf = '/Users/kirr/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
   let g:clang_format_path = '/Users/kirr/chromium/src/buildtools/mac/clang-format'
   so ~/chromium/src/tools/vim/ninja-build.vim
   so ~/yandex/clang-format.vim
   so ~/chromium/src/tools/vim/filetypes.vim
+else
+  let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
+  let g:clang_format_path = '/Users/kirr/yandex/browser/src/buildtools/mac/clang-format'
+  so ~/yandex/browser/src/tools/vim/ninja-build.vim
+  so ~/yandex/clang-format.vim
+  so ~/yandex/browser/src/tools/vim/filetypes.vim
 endif
 
 set cursorline
