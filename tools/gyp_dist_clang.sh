@@ -1,1 +1,1 @@
-CC=/usr/bin/dist-clang/clang CXX=/usr/bin/dist-clang/clang++ ./build/gyp_chromium -f ninja -D clang=1 -D chromium_mac_pch=0 -D component=shared_library -D dcheck_always_on=1 -D enable_update_channel=0 -D disable_nacl=1
+CC=/usr/local/bin/dist-clang/clang CXX=/usr/local/bin/dist-clang/clang++ ./build/gyp_chromium -f ninja -D clang=1 -D chromium_mac_pch=0 -D component=shared_library -D enable_update_channel=0 -D disable_nacl=1

@@ -7,7 +7,7 @@ import webbrowser
 
 def parse_repository_url(s):
     #TODO(kirr) support different types of git url
-    expr = r'(\w+://)?git@(?P<host>[\w\.]+):?/?(?P<project>[\w\~]+)/(?P<repo>\w+)\.git'
+    expr = r'(\w+://)?git@(?P<host>[\w\.-]+):?/?(?P<project>[\w\~]+)/(?P<repo>\w+)\.git'
     match = re.match(expr, s)
     if match is None:
         print('parsing failed: {0}'.format(s))
@@ -53,7 +53,7 @@ current_branch = exe(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], current_dir).
 repo_url = exe(['git', 'config', '--get', 'remote.origin.url'], current_dir)
 
 host, project, repo = parse_repository_url(repo_url)
-if host != 'stash.desktop.dev.yandex.net':
+if host != 'bitbucket.browser.yandex-team.ru':
     print('stash server url is invalid')
     sys.exit()
 
