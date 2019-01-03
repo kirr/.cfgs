@@ -1,8 +1,23 @@
 set nocompatible
 
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
 
+call plug#begin('~/.vim/plugged')
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-fugitive'
+
+Plug 'bkad/CamelCaseMotion'
+
+Plug 'scrooloose/nerdcommenter'
+
+Plug 'tpope/vim-abolish'
+
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'zchee/deoplete-jedi'
+call plug#end()
+
+let g:deoplete#enable_at_startup = 1
 filetype plugin indent on
 
 function! ToggleMouse()
@@ -83,7 +98,8 @@ set pastetoggle=<leader>v
 set t_Co=256
 let g:solarized_termcolors=256
 let g:solarized_termtrans = 1
-colorscheme solarized
+"set background=dark
+colorscheme solarized8
 if has("gui_running")
     set guifont=Menlo\ Regular:h13
     set transparency=4
@@ -118,15 +134,17 @@ let g:alternateSearchPath='wdr:src'
 let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 
-nnoremap <leader>gg :Shell git grep -n <C-r><C-w> -- *.h *.cc *.cpp
-nnoremap <leader>gp :Shell git grep -n <C-r><C-w> -- "*.py"
-nnoremap <leader>ff :Shell git ls-files \| fgrep <C-r><C-w>
-nnoremap <leader>G :Shell git gs<space>
-nnoremap <leader>GG :Shell git gs <C-r><C-w>
-nnoremap <leader>F :Shell git ls-files \| fgrep<space>
+let g:asyncrun_open = 8
+nnoremap <leader>gg :AsyncRun git grep -n <C-r><C-w> -- *.h *.cc *.cpp
+nnoremap <leader>gp :AsyncRun! git grep -n <C-r><C-w> -- "*.py"
+nnoremap <leader>ff :AsyncRun! git ls-files \| fgrep <C-r><C-w>
+nnoremap <leader>G :AsyncRun! git gs<space>
+nnoremap <leader>GG :AsyncRun! git gs <C-r><C-w>
+nnoremap <leader>rg :AsyncRun! rg -n <C-r><C-w>
+nnoremap <leader>F :FZF<CR>
 nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
-vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("Shell! git blame -L ".line_start.",".line_end." %")<cr>
-nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("Shell! git blame -L ".line_start.",".line_start." %")<cr>
+vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("AsyncRun!! git blame -L ".line_start.",".line_end." %")<cr>
+nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("AsyncRun! git blame -L ".line_start.",".line_start." %")<cr>
 nnoremap <leader>L :let cur_line=line(".") \| execute("!python ~/tools/open_line_in_browser.py '%:p' ".cur_line)<cr>
 
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
@@ -156,23 +174,19 @@ command WQ wq
 command Wq wq
 command Q q
 
-if stridx(getcwd(), 'Volumes') != -1
-  let g:loaded_youcompleteme = 1
-endif
-
-if stridx(getcwd(), 'yandex') == -1
-  let g:ycm_global_ycm_extra_conf = '/Users/kirr/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
-  let g:clang_format_path = '/Users/kirr/chromium/src/buildtools/mac/clang-format'
-  so ~/chromium/src/tools/vim/ninja-build.vim
-  so ~/yandex/clang-format.vim
-  so ~/chromium/src/tools/vim/filetypes.vim
-else
-  let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
-  let g:clang_format_path = '/Users/kirr/yandex/browser/src/buildtools/mac/clang-format'
-  so ~/yandex/browser/src/tools/vim/ninja-build.vim
-  so ~/yandex/clang-format.vim
-  so ~/yandex/browser/src/tools/vim/filetypes.vim
-endif
+"if stridx(getcwd(), 'yandex') == -1
+  "let g:ycm_global_ycm_extra_conf = '/Users/kirr/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
+  "let g:clang_format_path = '/Users/kirr/chromium/src/buildtools/mac/clang-format'
+  "so ~/chromium/src/tools/vim/ninja-build.vim
+  "so ~/yandex/clang-format.vim
+  "so ~/chromium/src/tools/vim/filetypes.vim
+"else
+  "let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
+  "let g:clang_format_path = '/Users/kirr/yandex/browser/src/buildtools/mac/clang-format'
+  "so ~/yandex/browser/src/tools/vim/ninja-build.vim
+  "so ~/yandex/clang-format.vim
+  "so ~/yandex/browser/src/tools/vim/filetypes.vim
+"endif
 
 set cursorline
 hi clear CursorLine
@@ -200,8 +214,8 @@ endfunction
 function! s:insert_copyright()
   let author_name = substitute(system("git config user.name"), "\\n", "", "g")
   let author_email = substitute(system("git config user.email"), "\\n", "", "g")
-  execute "normal! i// Copyright (c) 2015 Yandex LLC. All rights reserved."
-  execute "normal! oAuthor: " . author_name . " <" . author_email . ">"
+  execute "normal! i# Copyright (c) 2018 Yandex LLC. All rights reserved."
+  execute "normal! o# Author: " . author_name . " <" . author_email . ">"
   normal! kk
 endfunction
 
@@ -235,4 +249,5 @@ nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
 nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
 
+set rtp+=/usr/local/opt/fzf
 "let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}

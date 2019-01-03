@@ -29,6 +29,13 @@ bindkey "^N" history-beginning-search-forward
 alias gg='git grep -n'
 alias gl='git log -1'
 alias ff='find . -name'
-alias sshlin='ssh -X kirr.haze.yandex.net'
+alias sshlin='ssh root@browser-dev-kirr.man.yp-c.yandex.net'
 alias sshwin='ssh browser05.yandex-team.ru'
 alias cfile='python ~/cfgs/tools/compile_one_file.py '
+export PATH="/usr/local/opt/go@1.8/bin:$PATH"
+
+export FZF_DEFAULT_COMMAND='
+  (git ls-tree -r --name-only HEAD ||
+   find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
+      sed s/^..//) 2> /dev/null'
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
