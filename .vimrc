@@ -5,6 +5,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 
+Plug 'junegunn/fzf.vim'
+
 Plug 'bkad/CamelCaseMotion'
 
 Plug 'scrooloose/nerdcommenter'
@@ -95,15 +97,11 @@ noremap <Right> <NOP>
 set pastetoggle=<leader>v
 
 "Solarized
-set t_Co=256
-let g:solarized_termcolors=256
-let g:solarized_termtrans = 1
-"set background=dark
 colorscheme solarized8
-if has("gui_running")
-    set guifont=Menlo\ Regular:h13
-    set transparency=4
-endif
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
+"set background=dark
 
 syntax enable
 
@@ -137,11 +135,12 @@ let g:alternateExtensions_mm = "h,H,hpp,HPP"
 let g:asyncrun_open = 8
 nnoremap <leader>gg :AsyncRun git grep -n <C-r><C-w> -- *.h *.cc *.cpp
 nnoremap <leader>gp :AsyncRun! git grep -n <C-r><C-w> -- "*.py"
-nnoremap <leader>ff :AsyncRun! git ls-files \| fgrep <C-r><C-w>
+nnoremap <leader>ff :Files <C-r><C-w><CR>
 nnoremap <leader>G :AsyncRun! git gs<space>
 nnoremap <leader>GG :AsyncRun! git gs <C-r><C-w>
 nnoremap <leader>rg :AsyncRun! rg -n <C-r><C-w>
-nnoremap <leader>F :FZF<CR>
+nnoremap <leader>F :Files<CR>
+nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
 vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("AsyncRun!! git blame -L ".line_start.",".line_end." %")<cr>
 nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("AsyncRun! git blame -L ".line_start.",".line_start." %")<cr>
@@ -250,4 +249,3 @@ nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
 nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
 
 set rtp+=/usr/local/opt/fzf
-"let g:async = {'vim' : '/Applications/MacVim.app/Contents/MacOS/Vim'}
