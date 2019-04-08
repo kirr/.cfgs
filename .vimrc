@@ -1,5 +1,5 @@
 set nocompatible
-
+let mapleader = ' '
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
@@ -17,21 +17,12 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
 Plug 'zchee/deoplete-jedi'
+
+Plug 'Glench/Vim-Jinja2-Syntax'
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
 filetype plugin indent on
-
-function! ToggleMouse()
-  if &mouse == 'a'
-    set mouse=
-    echo "Mouse usage disabled"
-  else
-    set mouse=a
-    echo "Mouse usage enabled"
-  endif
-endfunction
-nnoremap <leader>m :call ToggleMouse()<CR>
 
 " Remember last location in file
 if has("autocmd")
@@ -108,7 +99,6 @@ syntax enable
 "call togglebg#map("<leader>b")
 
 " NERDTree
-nmap <leader>nt :NERDTreeFind<CR>
 let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=0
 let NERDTreeQuitOnOpen=1
@@ -133,14 +123,13 @@ let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
 let g:alternateExtensions_mm = "h,H,hpp,HPP"
 
 let g:asyncrun_open = 8
-nnoremap <leader>gg :AsyncRun git grep -n <C-r><C-w> -- *.h *.cc *.cpp
-nnoremap <leader>gp :AsyncRun! git grep -n <C-r><C-w> -- "*.py"
-nnoremap <leader>ff :Files <C-r><C-w><CR>
-nnoremap <leader>G :AsyncRun! git gs<space>
-nnoremap <leader>GG :AsyncRun! git gs <C-r><C-w>
-nnoremap <leader>rg :AsyncRun! rg -n <C-r><C-w>
+nnoremap <leader>ff :AsyncRun! rg --files -g "*<C-r><C-w>*"
+nnoremap <leader>S :AsyncStop<CR>
+nnoremap <leader>G :Rg <CR>
+nnoremap <leader>rg :AsyncRun! rg --vimgrep -n <C-r><C-w> -tpy
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
+nnoremap <leader>li :Lines<CR>
 nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
 vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("AsyncRun!! git blame -L ".line_start.",".line_end." %")<cr>
 nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("AsyncRun! git blame -L ".line_start.",".line_start." %")<cr>
@@ -173,20 +162,6 @@ command WQ wq
 command Wq wq
 command Q q
 
-"if stridx(getcwd(), 'yandex') == -1
-  "let g:ycm_global_ycm_extra_conf = '/Users/kirr/chromium/src/tools/vim/chromium.ycm_extra_conf.py'
-  "let g:clang_format_path = '/Users/kirr/chromium/src/buildtools/mac/clang-format'
-  "so ~/chromium/src/tools/vim/ninja-build.vim
-  "so ~/yandex/clang-format.vim
-  "so ~/chromium/src/tools/vim/filetypes.vim
-"else
-  "let g:ycm_global_ycm_extra_conf = '/Users/kirr/yandex/browser/src/tools/vim/chromium.ycm_extra_conf.py'
-  "let g:clang_format_path = '/Users/kirr/yandex/browser/src/buildtools/mac/clang-format'
-  "so ~/yandex/browser/src/tools/vim/ninja-build.vim
-  "so ~/yandex/clang-format.vim
-  "so ~/yandex/browser/src/tools/vim/filetypes.vim
-"endif
-
 set cursorline
 hi clear CursorLine
 hi CursorLineNR cterm=bold ctermbg=cyan
@@ -196,7 +171,7 @@ augroup clcolor
 augroup end
 
 "let g:ycm_auto_trigger = 0
-set history=10000
+set history=5000
 
 let b:delimitMate_autoclose = 0
 set completeopt-=preview
@@ -213,8 +188,7 @@ endfunction
 function! s:insert_copyright()
   let author_name = substitute(system("git config user.name"), "\\n", "", "g")
   let author_email = substitute(system("git config user.email"), "\\n", "", "g")
-  execute "normal! i# Copyright (c) 2018 Yandex LLC. All rights reserved."
-  execute "normal! o# Author: " . author_name . " <" . author_email . ">"
+  execute "normal! i# Copyright 2019 Yandex LLC. All rights reserved."
   normal! kk
 endfunction
 
@@ -246,6 +220,6 @@ endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
-nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
+"nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
 
 set rtp+=/usr/local/opt/fzf

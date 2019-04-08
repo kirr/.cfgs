@@ -22,11 +22,11 @@ if len(sys.argv) != 2:
 file_path = sys.argv[1]
 current_dir, file_name = os.path.split(file_path)
 root_folder = exe(['git', 'rev-parse', '--show-toplevel'], current_dir).strip()
-current_dir = os.path.join(root_folder, 'src', 'out', 'Debug')
+current_dir = os.path.join(root_folder, 'src', 'out', 'Default')
 if not os.path.exists(current_dir):
-    current_dir = os.path.join(root_folder, 'out', 'Debug')
+    current_dir = os.path.join(root_folder, 'out', 'Default')
 
-ninja_process = subprocess.Popen('ninja -nv All | fgrep "%s"'%file_name, stdout=subprocess.PIPE, shell=True, cwd=current_dir)
+ninja_process = subprocess.Popen('ninja -nv all | fgrep "%s"'%file_name, stdout=subprocess.PIPE, shell=True, cwd=current_dir)
 ninja_out, ninja_error = ninja_process.communicate()
 build_line = re.sub('^\[\d+/\d+\]', '', ninja_out)
 print build_line

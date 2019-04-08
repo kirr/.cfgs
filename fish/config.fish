@@ -5,8 +5,6 @@ alias sshlin='ssh -X kirr.haze.yandex.net'
 alias sshwin='ssh browser05.yandex-team.ru'
 alias cfile='python ~/cfgs/tools/compile_one_file.py '
 
-bind \cb beginning-of-line
-
 set -gx PATH /usr/local/bin ~/yandex/depot_tools $PATH
 set -gx GYP_GENERATORS ninja
 set -gx EDITOR vim
