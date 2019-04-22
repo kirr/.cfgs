@@ -1,4 +1,4 @@
-source ~/cfgs/antigen/antigen.zsh
+source ~/antigen.zsh
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply

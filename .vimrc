@@ -1,5 +1,5 @@
 set nocompatible
-let mapleader = ' '
+let mapleader = ','
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
@@ -126,7 +126,7 @@ let g:asyncrun_open = 8
 nnoremap <leader>ff :AsyncRun! rg --files -g "*<C-r><C-w>*"
 nnoremap <leader>S :AsyncStop<CR>
 nnoremap <leader>G :Rg <CR>
-nnoremap <leader>rg :AsyncRun! rg --vimgrep -n <C-r><C-w> -tpy
+nnoremap <leader>rg :AsyncRun! rg --vimgrep -n <C-r><C-w> -tcpp
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
 nnoremap <leader>li :Lines<CR>
