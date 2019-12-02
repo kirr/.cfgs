@@ -1,5 +1,16 @@
 set nocompatible
+set nofixendofline
 let mapleader = ','
+
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py --clang-completer
+  endif
+endfunction
 
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
@@ -13,16 +24,32 @@ Plug 'scrooloose/nerdcommenter'
 
 Plug 'tpope/vim-abolish'
 
-Plug 'Shougo/deoplete.nvim'
+" Plug 'Shougo/deoplete.nvim'
+" Plug 'zchee/deoplete-jedi'
 Plug 'roxma/nvim-yarp'
 Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'zchee/deoplete-jedi'
+Plug 'Valloric/YouCompleteMe'
 
 Plug 'Glench/Vim-Jinja2-Syntax'
+
+" Plug 'hauleth/asyncdo.vim'
+" Plug 'romainl/vim-qf'
+Plug 'mhinz/vim-grepper'
+Plug 'vim-scripts/vcscommand.vim'
+Plug 'markonm/traces.vim'
+Plug 'derekwyatt/vim-fswitch'
+Plug 'phleet/vim-mercenary'
+Plug 'moll/vim-bbye'
 call plug#end()
 
-let g:deoplete#enable_at_startup = 1
+let g:mercenary_hg_executable = './ya tool hg'
+let g:ycm_show_diagnostics_ui = 0
+let g:fsnonewfiles = 1
+let g:grepper = {'quickfix': 0}
+" let g:deoplete#enable_at_startup = 1
 filetype plugin indent on
+
+let makeprg = 'ssh -AT kirr@rtline1.sas.yp-c.yandex.net "(cd arcadia && ./ya make -r rtline/frontend)" 2>&1 | sed "s/\/home\/kirr/\/Users\/kirr\/yandex/g"'
 
 " Remember last location in file
 if has("autocmd")
@@ -30,6 +57,7 @@ if has("autocmd")
     \| exe "normal g'\"" | endif
 endif
 
+nmap <silent> <Leader>h :FSHere<cr>
 
 set backspace=indent,eol,start
 
@@ -68,10 +96,11 @@ set list listchars=tab:>·,trail:·
 set nowrap
 set autoindent
 set smartindent
+set cindent
 set expandtab
-set shiftwidth=2
-set tabstop=2
-set softtabstop=2
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 
 vnoremap < <gv
 vnoremap > >gv
@@ -109,31 +138,27 @@ let NERDTreeKeepTreeInNewTab=1
 nnoremap <Leader>cp :let @*=expand("%")<cr>:echo "Copied file path to clipboard"<cr>
 " Copy current filename to system clipboard
 nnoremap <Leader>cf :let @*=expand("%:t")<cr>:echo "Copied file name to clipboard"<cr>
-nnoremap <Leader>br :let @*='breakpoint set --file '.expand("%:t").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
+nnoremap <Leader>bl :let @*='breakpoint set --file '.expand("%:t").' --line '.line(".")<cr>:echo "Copied file lldb breakpoint command"<cr>
+nnoremap <Leader>br :let @*='break '.@%.':'.line(".")<cr>:echo "Copied file gdb breakpoint command"<cr>
+nnoremap <Leader>ca :let @*='https://a.yandex-team.ru/arc/trunk/arcadia/'.expand("%").'#'.line(".")<cr>:echo "Copied arcadia file link to clipboaard"<cr>
 "nnoremap y "+y
 "vnoremap y "+y
 set splitbelow
 set splitright
 
-" Alternate
-nnoremap <Leader>h :A<CR>
-nnoremap <Leader>l :IH<CR>
-let g:alternateSearchPath='wdr:src'
-let g:alternateExtensions_h = "c,cpp,cxx,cc,CC,mm"
-let g:alternateExtensions_mm = "h,H,hpp,HPP"
-
 let g:asyncrun_open = 8
 nnoremap <leader>ff :AsyncRun! rg --files -g "*<C-r><C-w>*"
 nnoremap <leader>S :AsyncStop<CR>
 nnoremap <leader>G :Rg <CR>
-nnoremap <leader>rg :AsyncRun! rg --vimgrep -n <C-r><C-w> -tcpp
+nnoremap <leader>rg :GrepperRg -Sn <C-r><C-w> -tcpp
+nnoremap <leader>rp :GrepperRg -Sn <C-r><C-w> -tpy
 nnoremap <leader>F :Files<CR>
 nnoremap <leader>B :Buffers<CR>
-nnoremap <leader>li :Lines<CR>
+nnoremap <leader>L :Lines<CR>
 nnoremap <leader>pr :!~/tools/show_pull_request.sh <cword><cr>
 vnoremap <leader>bl <esc>:let line_start=line("'<") \| let line_end=line("'>") \| execute("AsyncRun!! git blame -L ".line_start.",".line_end." %")<cr>
 nnoremap <leader>bl <esc>:let line_start=line(".") \| execute("AsyncRun! git blame -L ".line_start.",".line_start." %")<cr>
-nnoremap <leader>L :let cur_line=line(".") \| execute("!python ~/tools/open_line_in_browser.py '%:p' ".cur_line)<cr>
+"nnoremap <leader>L :let cur_line=line(".") \| execute("!python ~/tools/open_line_in_browser.py '%:p' ".cur_line)<cr>
 
 nnoremap <leader>ud :diffoff! <CR> :q<CR>
 nmap tn :b#<CR>
@@ -175,15 +200,6 @@ set history=5000
 
 let b:delimitMate_autoclose = 0
 set completeopt-=preview
-set shell=/bin/bash
-
-function! s:insert_gates()
-  let gatename = substitute(toupper(expand("%")), "\\(\\.\\|/\\)", "_", "g") . "_"
-  execute "normal! i#ifndef " . gatename
-  execute "normal! o#define " . gatename
-  execute "normal! Go#endif  // " . gatename
-  normal! kk
-endfunction
 
 function! s:insert_copyright()
   let author_name = substitute(system("git config user.name"), "\\n", "", "g")
@@ -217,9 +233,18 @@ function! s:openFileInWindowAbove()
  wincmd p
 endfunction
 
-autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
-nnoremap <leader>gard :call <SID>insert_gates()<CR>
 nnoremap <leader>cpr :call <SID>insert_copyright()<CR>
 "nnoremap <F8> :call <SID>openFileInWindowAbove()<CR>
 
 set rtp+=/usr/local/opt/fzf
+
+command! YaMakeRemote execute 'AsyncRun ssh -AT kirr@rtline1.sas.yp-c.yandex.net "(cd arcadia_hg && ./ya make -r rtline/frontend)" 2>&1 | sed "s/\/home\/kirr/\/Users\/kirr\/yandex/g"'
+command! YaMakeRemoteDebug execute 'AsyncRun ssh -AT kirr@rtline1.sas.yp-c.yandex.net "(cd arcadia_hg && ./ya make rtline/frontend)" 2>&1 | sed "s/\/home\/kirr/\/Users\/kirr\/yandex/g"'
+
+map <C-K> :py3f /usr/local/Cellar/clang-format/2019-01-18/share/clang/clang-format.py<cr>
+imap <C-K> <c-o>:py3f /usr/local/Cellar/clang-format/2019-01-18/share/clang/clang-format.py<cr>
+command! FormatDiff enew | r !format-diff
+command! FormatFile execute '!yhg diff -r default -U0 --color=never % | python /usr/local/Cellar/clang-format/2019-01-18/share/clang/clang-format-diff.py -p1'
+
+autocmd FileType python setlocal shiftwidth=4 softtabstop=4 expandtab
+autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab

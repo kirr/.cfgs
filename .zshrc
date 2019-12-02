@@ -6,7 +6,7 @@ antigen apply
 PS1='$ '
 
 export PATH=~/bin:$PATH
-export PATH=~/yandex/depot_tools:$PATH
+#export PATH=~/yandex/depot_tools:$PATH
 
 export GYP_GENERATORS=ninja
 export EDITOR=vim
@@ -26,9 +26,6 @@ setopt inc_append_history
 bindkey "^P" history-beginning-search-backward
 bindkey "^N" history-beginning-search-forward
 
-alias gl='git log -1'
-alias cfile='python ~/cfgs/tools/compile_one_file.py '
-
 set -o vi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -38,4 +35,8 @@ export FZF_DEFAULT_COMMAND='
    find . -path "*/\.*" -prune -o -type f -print -o -type l -print |
       sed s/^..//) 2> /dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+
+# The next line updates PATH for Yandex Cloud CLI.
+if [ -f '/Users/kirr/yandex-cloud/path.bash.inc' ]; then source '/Users/kirr/yandex-cloud/path.bash.inc'; fi
 
