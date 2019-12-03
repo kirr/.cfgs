@@ -21,6 +21,7 @@ bindkey "^U" backward-kill-line
 export HISTFILE=~/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
+export TERM=xterm-256color
 setopt sharehistory
 setopt inc_append_history
 bindkey "^P" history-beginning-search-backward
@@ -40,3 +41,4 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # The next line updates PATH for Yandex Cloud CLI.
 if [ -f '/Users/kirr/yandex-cloud/path.bash.inc' ]; then source '/Users/kirr/yandex-cloud/path.bash.inc'; fi
 
+source ~/.git-prompt.sh

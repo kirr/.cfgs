@@ -10,3 +10,6 @@ sudo apt-get install zsh
 sudo apt-get install vim
 
 curl -L git.io/antigen > ~/antigen.zsh
+
+git clone https://github.com/lifepillar/vim-solarized8.git \
+        ~/.vim/pack/themes/opt/solarized8
